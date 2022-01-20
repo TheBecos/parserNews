@@ -20,7 +20,7 @@
                         <?php
                         $cnt_news = array(5, 10, 20, 30);
                         foreach ($cnt_news as $cnt) {
-                            echo '<option value="' . $cnt . '" ' . ($_COOKIE['perpage'] == $cnt ? 'selected' : '') . '> ' . $cnt . '</option>';
+                            echo '<option value="' . $cnt . '" ' . ($nbNewsPerPage == $cnt ? 'selected' : '') . '> ' . $cnt . '</option>';
                         }
                         ?>
                     </select>

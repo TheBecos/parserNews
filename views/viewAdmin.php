@@ -14,6 +14,26 @@
         <a href="?action=logout" class="col-lg-1 btn btn-danger btn-lg" role="button">Выход</a>
     </header>
     <article class="row">
+        <div class="col-lg-10 offset-lg-1">
+            <?php
+            if (isset($countNews) && $countNews > 0) {
+                ?>
+                <a href="?action=sync" class="btn btn-primary btn-lg" role="button"><i
+                            class="fas fa-sync fa-sm"></i>
+                    Синхронизация</a>
+                &nbsp;
+                <a href="?action=clearing" class="btn btn-danger btn-lg" role="button"><i
+                            class="fas fa-trash fa-sm"></i>
+                    Очистить базу</a>
+            <?php } else { ?>
+                <a href="?action=initial" class="btn btn-warning btn-lg" role="button"><i
+                            class="fas fa-cloud-download-alt fa-sm"></i>
+                    Инициализация</a>
+            <?php }
+            ?>
+        </div>
+    </article>
+    <article class="row">
         <div class="col-lg-10 offset-lg-1 bg-dark text-white articleAdmin rounded">
             <a href="?action=addSource" class="col-lg-2 offset-lg-10 btn btn-success btn-lg" role="button">Добавить</a>
             <ul class="list-group list-group-flush">
@@ -28,7 +48,6 @@
                                                     <label class="form-check-label">
                                                     ' . $value['name'] . '</label>
                                                     <span class="pull-right">
-                                                        <a href="?action=parseNewsSource&source_id=' . $value['source_id'] . '" class="form-parse-label"" data-id="' . $value['source_id'] . '" title="Распарсить новости"><i class="fas fa-download fa-sm" style="color: lawngreen"></i></a>
                                                         <a href="?action=editSource&source_id=' . $value['source_id'] . '" class="form-edit-label" data-id="' . $value['source_id'] . '" title="Изменить"><i class="fas fa-pencil-alt fa-sm" style="color: royalblue"></i></a>
                                                         <a href="?action=deleteSource&source_id=' . $value['source_id'] . '" class="form-delete-label"" data-id="' . $value['source_id'] . '" onClick="return window.confirm(\'Вы действительно хотите удалить источник?\');" title="Удалить"><i class="fas fa-ban fa-sm" style="color: red"></i></a>
                                                     </span>

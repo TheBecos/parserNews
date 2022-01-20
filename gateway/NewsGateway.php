@@ -42,7 +42,7 @@ class NewsGateway
             ));
         }
         catch (PDOException $e) {
-            $this->myError($e);
+            //$this->myError($e);
         }
 
     }
@@ -85,11 +85,11 @@ class NewsGateway
         }
     }
 
-    pubLic function deleteNews(string $url)
+    pubLic function deleteAllNews()
     {
         try {
-            $query = "DELETE FROM `news` WHERE url=?";
-            $this->con->executeQuery($query, array('?' => array($url, PDO::PARAM_STR)));
+            $query = "DELETE FROM news";
+            $this->con->executeQuery($query);
         }
         catch (PDOException $e) {
             $this->myError($e);

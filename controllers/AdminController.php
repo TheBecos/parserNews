@@ -31,8 +31,14 @@ class AdminController
                 case 'deleteSource':
                     $this->deleteSource();
                     break;
-                case 'parseNewsSource':
-                    $this->parseNewsSource();
+                case 'initial':
+                    $this->parseNewsSources();
+                    break;
+                case 'sync':
+                    $this->parseNewsSources(14);
+                    break;
+                case 'clearing':
+                    $this->clearing();
                     break;
                 default:
                     global $rep, $views;
@@ -54,6 +60,8 @@ class AdminController
         global $rep, $views;
         $adminMod = new AdminModel();
         $listSource = $adminMod->viewSource();
+        $newsMod = new NewsModel();
+        $countNews = $newsMod->countNews();
         require($rep . $views['viewAdmin']);
     }
 
@@ -114,7 +122,6 @@ class AdminController
 
     }
 
-
     private function logout()
     {
         global $rep, $views;
@@ -132,17 +139,18 @@ class AdminController
         header('Location: index.php?action=pageAdmin');
     }
 
-    private function parseNewsSource()
+    private function parseNewsSources($period_days = 365)
     {
-
         $adminMod = new AdminModel();
 
         include './libs/phpQuery.php';
 
-        if (!empty($_GET['source_id'])) {
-            $sourceMod = new SourceModel();
-            $source = $sourceMod->editSource($_GET['source_id']);
-            if (!empty($source)) {
+        $sources = $adminMod->viewSource();
+
+        global $database, $db_login, $db_password;
+
+        if (!empty($sources)) {
+            foreach ($sources as $source) {
                 $url = $source['address'];
                 $code = base64_decode($source['parser_code']);
                 $opts = array(
@@ -157,8 +165,7 @@ class AdminController
                 $result = eval($code);
 
                 if (!empty($result)) {
-                    global $database, $db_login, $db_password;
-                    $date = strtotime('-1 year');
+                    $date = strtotime('-' . $period_days . 'day');
                     foreach ($result as $record) {
                         if (strtotime($record['date']) >= $date) {
                             $new = new News($source['source_id'], $record['url'], $record['title'], $record['description'], $record['tag'], $record['image'], $record['date']);
@@ -173,4 +180,13 @@ class AdminController
         $listSource = $adminMod->viewSource();
         header('Location: index.php?action=pageAdmin');
     }
+
+    private function clearing()
+    {
+        global $database, $db_login, $db_password;
+        $gw = new NewsGateway(new Connection($database, $db_login, $db_password));
+        $gw->deleteAllNews();
+        header('Location: index.php?action=pageAdmin');
+    }
+
 }

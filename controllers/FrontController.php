@@ -5,7 +5,7 @@ class FrontController
     function __construct()
     {
         session_start();
-        $listAction_Admin = array('logout', 'deleteSource', 'addSource', 'editSource', 'parseNewsSource', 'pageAdmin');
+        $listAction_Admin = array('logout', 'deleteSource', 'addSource', 'editSource', 'pageAdmin', 'initial', 'sync', 'clearing');
 
         $viewError = array();
 
