@@ -6,6 +6,8 @@ $server = "localhost";
 $db_login = "root";
 $db_password = "root";
 
+$message = '';
+
 $views['error'] = 'views/error.php';
 $views['viewNews'] = 'views/viewNews.php';
 $views['loginAdmin'] = 'views/loginAdmin.php';

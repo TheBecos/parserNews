@@ -57,7 +57,7 @@ class AdminController
 
     private function pageMain()
     {
-        global $rep, $views;
+        global $rep, $views, $message;
         $adminMod = new AdminModel();
         $listSource = $adminMod->viewSource();
         $newsMod = new NewsModel();
@@ -68,13 +68,13 @@ class AdminController
     private function pageLogin()
     {
         global $rep, $views;
-        echo('<p class="alert alert-info">good</p>');
+        echo('<p class="alert alert-info">Success</p>');
         require($rep . $views['loginAdmin']);
     }
 
     private function addSource()
     {
-        global $rep, $views;
+        global $rep, $views, $message;
 
         if (!empty($_GET['source_id'])) {
             $sourceMod = new SourceModel();
@@ -102,11 +102,13 @@ class AdminController
 
                     if (!empty($_POST['source_id'])) {
                         $adminMod->updateSource($_POST['source_id'], $source);
+                        $message = 'Источник обновлен';
                     } else {
                         $adminMod->addSource($source);
+                        $message = 'Источник добавлен';
                     }
                     $listSource = $adminMod->viewSource();
-                    header('Location: index.php?action=pageAdmin');
+                    $this->pageMain();
                 } else {
                     $viewError[] = "Подключение уже установлено";
                     require($rep . $views['error']);
@@ -124,19 +126,23 @@ class AdminController
 
     private function logout()
     {
-        global $rep, $views;
+        global $rep, $views, $message;
         $adminMod = new AdminModel();
         $adminMod->logout();
+        $message = 'Вы вышли из панели администратора';
         require($rep . $views['loginAdmin']);
     }
 
     private function deleteSource()
     {
+        global $message;
         $adminMod = new AdminModel();
         if (!empty($_GET['source_id'])) {
             $adminMod->deleteSource($_GET['source_id']);
+            $message = 'Источник удален';
         }
-        header('Location: index.php?action=pageAdmin');
+        $message = 'Источник не найден';
+        $this->pageMain();
     }
 
     private function parseNewsSources($period_days = 365)
@@ -147,7 +153,7 @@ class AdminController
 
         $sources = $adminMod->viewSource();
 
-        global $database, $db_login, $db_password;
+        global $database, $db_login, $db_password, $message;
 
         if (!empty($sources)) {
             foreach ($sources as $source) {
@@ -176,17 +182,18 @@ class AdminController
                 }
             }
         }
-
+        $message = 'Данные в БД обновлены';
         $listSource = $adminMod->viewSource();
-        header('Location: index.php?action=pageAdmin');
+        $this->pageMain();
     }
 
     private function clearing()
     {
-        global $database, $db_login, $db_password;
+        global $database, $db_login, $db_password, $message;
         $gw = new NewsGateway(new Connection($database, $db_login, $db_password));
         $gw->deleteAllNews();
-        header('Location: index.php?action=pageAdmin');
+        $message = 'База новостей очищена';
+        $this->pageMain();
     }
 
 }

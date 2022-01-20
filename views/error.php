@@ -8,7 +8,7 @@
         <div class="container-fluid">
             <header class="row">
                 <h1 class="col-lg-8 offset-lg-2 text-center">Обнаружены ошибки!</h1>
-                <a href="index.php" class="col-lg-2 btn btn-dark btn-lg" role="button" aria-pressed="true">Главная</a>
+                <a href="index.php" class="col-lg-2 btn btn-primary btn-lg" role="button" aria-pressed="true">Главная</a>
             </header>
             <article class="row">
                 <?php
