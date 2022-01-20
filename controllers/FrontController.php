@@ -25,7 +25,7 @@ class FrontController
                     $controller = new AdminController();
                 }
             } else {
-                $controller = new VisitorController();
+                $controller = new NewsController();
             }
         }
         catch (Exception $e) {

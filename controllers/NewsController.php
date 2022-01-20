@@ -1,6 +1,6 @@
 <?php
 
-class VisitorController
+class NewsController
 {
     function __construct()
     {
@@ -38,7 +38,11 @@ class VisitorController
     {
         global $rep, $views;
         $m = new NewsModel();
-        $nbNewsPerPage = isset($_GET['perpage']) ? $_GET['perpage'] : 10;
+        if (isset($_GET['perpage'])) {
+            setcookie('perpage', $_GET['perpage']);
+            $_COOKIE['perpage'] = $_GET['perpage'];
+        }
+        $nbNewsPerPage = isset($_COOKIE['perpage']) ? $_COOKIE['perpage'] : 10;
         $nbTotalNews = $m->countNews();
 
         $nbPages = Validation::nbPage($nbTotalNews, $nbNewsPerPage);
@@ -47,7 +51,7 @@ class VisitorController
         $premierNews = $m->nbNewsPerPage($page, $nbNewsPerPage);
         $listNews = $m->viewNewsPerPage($premierNews, $nbNewsPerPage);
 
-        require($rep . $views['viewVisitor']);
+        require($rep . $views['viewNews']);
     }
 
     private function login()

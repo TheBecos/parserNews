@@ -30,8 +30,9 @@ class NewsGateway
     public function addNew(News $news)
     {
         try {
-            $query = "INSERT INTO News(url, title, description, tag, image, date_publication) VALUES (:url,:title,:description,:tag,:image,:date)";
+            $query = "INSERT INTO News(source_id, url, title, description, tag, image, date_publication) VALUES (:source,:url,:title,:description,:tag,:image,:date)";
             $this->con->executeQuery($query, array(
+                ':source'      => array($news->getSource(), PDO::PARAM_STR),
                 ':url'         => array($news->getUrl(), PDO::PARAM_STR),
                 ':title'       => array($news->getTitle(), PDO::PARAM_STR),
                 ':description' => array($news->getDescription(), PDO::PARAM_STR),
@@ -54,7 +55,7 @@ class NewsGateway
             $res = $this->con->getResults();
             $news = null;
             foreach ($res as $line) {
-                $news[] = new News($line['url'], $line['title'], $line['description'], $line['tag'], $line['image'], $line['date_publication']);
+                $news[] = new News($line['source_id'], $line['url'], $line['title'], $line['description'], $line['tag'], $line['image'], $line['date_publication']);
             }
             return $news;
         }
@@ -84,7 +85,7 @@ class NewsGateway
         }
     }
 
-    pubLic function deleteNews(String $url)
+    pubLic function deleteNews(string $url)
     {
         try {
             $query = "DELETE FROM `news` WHERE url=?";

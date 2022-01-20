@@ -2,6 +2,7 @@
 
 class News
 {
+    private $source_id;
     private $title;
     private $description;
     private $tag;
@@ -9,8 +10,9 @@ class News
     private $url;
     private $date;
 
-    public function __construct(string $url, string $title, string $description, string $tag, string $image, string $date)
+    public function __construct(int $source_id, string $url, string $title, string $description, string $tag, string $image, string $date)
     {
+        $this->source_id = $source_id;
         $this->title = $title;
         $this->description = $description;
         $this->tag = $tag;
@@ -78,6 +80,24 @@ class News
     public function setDate(string $date)
     {
         $this->date = $date;
+    }
+
+    public function getSource(): int
+    {
+        return $this->source_id;
+    }
+
+    public function setSource(int $source_id)
+    {
+        $this->source_id = $source_id;
+    }
+
+    public function getSourceName(): string
+    {
+        global $database, $db_login, $db_password;
+        $gw = new SourceGateway(new Connection($database, $db_login, $db_password));
+        $source = $gw->editSource($this->source_id);
+        return $source['name'];
     }
 
 }

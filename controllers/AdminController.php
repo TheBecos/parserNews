@@ -161,7 +161,7 @@ class AdminController
                     $date = strtotime('-1 year');
                     foreach ($result as $record) {
                         if (strtotime($record['date']) >= $date) {
-                            $new = new News($record['url'], $record['title'], $record['description'], $record['tag'], $record['image'], $record['date']);
+                            $new = new News($source['source_id'], $record['url'], $record['title'], $record['description'], $record['tag'], $record['image'], $record['date']);
                             $gw = new NewsGateway(new Connection($database, $db_login, $db_password));
                             $gw->addNew($new);
                         }

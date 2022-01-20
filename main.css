@@ -47,6 +47,8 @@ header {
     height: 500px !important;
 }
 
-.search-item__image{
-    height: 120px;
+.list-group-item img{
+    height: 140px;
+    max-width: 270px;
+    width: 100%;
 }
